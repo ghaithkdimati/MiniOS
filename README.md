@@ -8,3 +8,4 @@ The mini operating system includes the following features:
 
 2-Memory Management: The system implements a basic memory management scheme, including memory allocation and deallocation. It manages memory for processes and ensures efficient memory utilization.
 
+for detailed information read the pdf files
