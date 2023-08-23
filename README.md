@@ -1,7 +1,7 @@
-##MiniOS
+## MiniOS
 This project is a mini operating system developed using the C programming language in a Linux development environment. The purpose of this project is to demonstrate the basic functionalities of an operating system and provide an understanding of its components.
 
-#Features
+# Features
 The mini operating system includes the following features:
 
 1-Process Management: The system allows creating, terminating, and managing multiple processes. It provides functionalities like process creation, termination, and context switching.
