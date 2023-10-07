@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-/// @brief /////alooooooo
+
 struct PCB
 {
     int priority;
@@ -11,7 +11,11 @@ struct PCB
     char state;
     int arrivalTime;
     int waitingTime;
+    int lastStopped;
+    int memSize;
+    int memStart;
 };
+
 
 struct Node { 
     struct PCB process;
@@ -26,6 +30,12 @@ struct Queue
     int count;
 };
 
+void ProcessQueueInit(struct Queue* q)
+{
+    q->count=0;
+    q->Head=NULL;
+    q->Tail=NULL;
+}
 
 void enqueue(struct Queue* q,struct PCB data)
 {
@@ -56,6 +66,11 @@ struct PCB* dequeue(struct Queue* q)
 
     q->count--;
     q->Head=q->Head->next;
+    if(q->count==0)
+    {
+        q->Head=NULL;
+        q->Tail=NULL;
+    }
     free(tmp);
     return p;
 }

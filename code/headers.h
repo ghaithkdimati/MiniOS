@@ -10,7 +10,13 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
-#include "PriorityQueue.h"
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "FloatPriorityQueue.h"
+
+
+
 
 typedef short bool;
 #define true 1
@@ -18,7 +24,8 @@ typedef short bool;
 
 #define SHKEY 300
 #define SHKEY_PG_S 37
-
+#define MSGKEY_PG_S 39
+#define SHKEY_S_P 41
 
 struct processData
 {
@@ -26,6 +33,7 @@ struct processData
     int priority;
     int runningtime;
     int id;
+    int memSize;
 };
 
 
@@ -78,5 +86,49 @@ void destroyClk(bool terminateAll)
     if (terminateAll)
     {
         killpg(getpgrp(), SIGINT);
+    }
+}
+
+
+
+union Semun
+{
+    int val;               /* value for SETVAL */
+    struct semid_ds *buf;  /* buffer for IPC_STAT & IPC_SET */
+    short *array;         /* array for GETALL & SETALL */
+    struct seminfo *__buf; /* buffer for IPC_INFO */
+    void *__pad;
+};
+
+
+void down(int sem)
+{
+    struct sembuf p_op;
+
+    p_op.sem_num = 0;
+    p_op.sem_op = -1;
+    p_op.sem_flg = !IPC_NOWAIT;
+
+    if (semop(sem, &p_op, 1) == -1)
+    {
+        perror("Error in down()");
+        exit(-1);
+    }
+}
+
+
+
+void up(int sem)
+{
+    struct sembuf v_op;
+
+    v_op.sem_num = 0;
+    v_op.sem_op = 1;
+    v_op.sem_flg = !IPC_NOWAIT;
+
+    if (semop(sem, &v_op, 1) == -1)
+    {
+        perror("Error in up()");
+        exit(-1);
     }
 }

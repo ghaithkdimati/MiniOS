@@ -15,12 +15,28 @@ struct PriorityQueue
 };
 
 
+
+void InitPriorityQueue(struct PriorityQueue* q)
+{
+    q->count=0;
+    q->Head=NULL;
+    q->Tail=NULL;
+}
+
+
+
 void priorityEnqueue(struct PriorityQueue* q,struct PCB data,int p)
 {
     struct Pnode* n=(struct Pnode*)malloc(sizeof(struct Pnode));
     n->process=data;
     n->priority=p;
-    if(q->Head==NULL || p<q->Head->priority)
+    if(q->Head==NULL)
+    {
+        q->Head=n;
+        q->count++;
+        return;
+    }
+    if(p<q->Head->priority)
     {
         n->next=q->Head;
         q->Head=n;
@@ -49,6 +65,11 @@ struct PCB*  priorityDequeue(struct PriorityQueue* q)
 
     q->count--;
     q->Head=q->Head->next;
+    if(q->count==0)
+    {
+        q->Head=NULL;
+        q->Tail=NULL;
+    }
     free(tmp);
     return p;
 }
@@ -64,3 +85,4 @@ void priorityPrint(struct PriorityQueue* q)
         n=n->next;
     }
 }
+
